@@ -6,6 +6,12 @@ from datetime import datetime
 
 # ICP - Segment
 # Get list for company to exclude & industry to exclude
+
+# Read from Local Drive
+# comp_csv = r'C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\00 2X Python Code (Wei Zhen Lim)\LS_ZI_Cleaning_ICP_Check\Company to Exclude.csv'
+# industry_csv = r'C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\00 2X Python Code (Wei Zhen Lim)\LS_ZI_Cleaning_ICP_Check\Industry ICP Keywords.csv'
+
+# Read CSV From GitHub
 comp_csv = r'https://github.com/WeiZhenLim/2X/blob/main/00%202X%20Python%20Code%20(Wei%20Zhen%20Lim)/LS_ZI_Cleaning_ICP_Check/Company%20to%20Exclude.csv'
 industry_csv = r'https://github.com/WeiZhenLim/2X/blob/main/00%202X%20Python%20Code%20(Wei%20Zhen%20Lim)/LS_ZI_Cleaning_ICP_Check/Industry%20ICP%20Keywords.csv'
 
