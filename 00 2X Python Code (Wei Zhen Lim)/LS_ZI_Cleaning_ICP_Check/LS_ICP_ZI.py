@@ -12,8 +12,8 @@ from datetime import datetime
 # industry_csv = r'C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\00 2X Python Code (Wei Zhen Lim)\LS_ZI_Cleaning_ICP_Check\Industry ICP Keywords.csv'
 
 # Read CSV From GitHub
-comp_csv = r'https://github.com/WeiZhenLim/2X/blob/main/00%202X%20Python%20Code%20(Wei%20Zhen%20Lim)/LS_ZI_Cleaning_ICP_Check/Company%20to%20Exclude.csv'
-industry_csv = r'https://github.com/WeiZhenLim/2X/blob/main/00%202X%20Python%20Code%20(Wei%20Zhen%20Lim)/LS_ZI_Cleaning_ICP_Check/Industry%20ICP%20Keywords.csv'
+comp_csv = r'https://raw.githubusercontent.com/WeiZhenLim/2X/main/00%202X%20Python%20Code%20(Wei%20Zhen%20Lim)/LS_ZI_Cleaning_ICP_Check/Company%20to%20Exclude.csv'
+industry_csv = r'https://raw.githubusercontent.com/WeiZhenLim/2X/main/00%202X%20Python%20Code%20(Wei%20Zhen%20Lim)/LS_ZI_Cleaning_ICP_Check/Industry%20ICP%20Keywords.csv'
 
 comp_to_exclude = list(pd.read_csv(comp_csv)['Company Domain'].unique())
 invalid_industry_keywords = list(pd.read_csv(industry_csv)['Industry Keyword'].unique())
