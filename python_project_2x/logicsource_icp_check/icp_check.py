@@ -49,7 +49,6 @@ def _print_info():
     display(df_healthcare)
     print("The following are the latest re-segmentation being used, dated back to Feb 7, 2024.")
     display(df_resegmentation)
-    print("For the list of company and list of invalid industry, reach out to Wei Zhen for the list.")
 
     # Reset Wrap Text
     pd.reset_option('display.max_colwidth')
