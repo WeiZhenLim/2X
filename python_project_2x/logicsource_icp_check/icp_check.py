@@ -35,6 +35,26 @@ ind_resegment = {'Retail + CPG' : ['Consumer Services', 'Retail'],
                  'General': ['Media & Internet'], 
                  'Healthcare': healthcare_ICP_segment}
 
+# Create an Output for User to Know the Latest Segmentation
+def _print_info():
+    df_service = pd.DataFrame(services_ICP_segment, columns=["Original Industry ICP Segments (Services) - Nov 2023"])
+    df_healthcare = pd.DataFrame(healthcare_ICP_segment, columns=["Original Industry ICP Segments (Healthcare) - Nov 2023"])
+    df_resegmentation = pd.DataFrame({k: [v] for k,v in ind_resegment.items()}, index=["New Resegmentation"]).transpose()
+
+    # Allow Wrap Text
+    pd.set_option('display.max_colwidth', 0)
+
+    print("The following are the Industry ICP used for the ICP check (Original Industry ICP dated back to Nov 2023)")
+    display(df_service)
+    display(df_healthcare)
+    print("The following are the latest re-segmentation being used, dated back to Feb 7, 2024.")
+    display(df_resegmentation)
+    print("For the list of company and list of invalid industry, reach out to Wei Zhen for the list.")
+
+    # Reset Wrap Text
+    pd.reset_option('display.max_colwidth')
+
+
 # ----------------------------------------------------------------------------------------------------------------------------------------------------
 
 # This section is completed on Feb 7, 2024 by Lim Wei Zhen
