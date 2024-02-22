@@ -5,7 +5,8 @@ from logicsource_icp_check.icp_check import zi_icp_check
 
 def read_check(filepath_read, is_company, output_path, output_filename):
     """
-    This function checks the ZI purchased companies/contacts based on LogicSource's ICP and export to HubSpot format. \n
+    This function checks the ZI purchased companies/contacts based on LogicSource's ICP and export the output in 
+    HubSpot format for the ease of upload. \n
     ---
     Parameters: \n
     `filepath_read` = Path for ZI Purchased Companies/Contacts CSV File \n
