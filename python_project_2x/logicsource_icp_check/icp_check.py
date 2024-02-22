@@ -1,5 +1,6 @@
 import pandas as pd
 import tldextract as domain_extract
+from urllib.error import HTTPError
 from datetime import datetime
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -7,16 +8,15 @@ from datetime import datetime
 # ICP - Segment
 # Get list for company to exclude & industry to exclude
 
-# Read from Local Drive
-# comp_csv = r'C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\00 2X Python Code (Wei Zhen Lim)\LS_ZI_Cleaning_ICP_Check\Company to Exclude.csv'
-# industry_csv = r'C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\00 2X Python Code (Wei Zhen Lim)\LS_ZI_Cleaning_ICP_Check\Industry ICP Keywords.csv'
-
 # Read CSV From GitHub
-comp_csv = r'https://raw.githubusercontent.com/WeiZhenLim/2X/main/00%202X%20Python%20Code%20(Wei%20Zhen%20Lim)/LS_ZI_Cleaning_ICP_Check/Company%20to%20Exclude.csv'
-industry_csv = r'https://raw.githubusercontent.com/WeiZhenLim/2X/main/00%202X%20Python%20Code%20(Wei%20Zhen%20Lim)/LS_ZI_Cleaning_ICP_Check/Industry%20ICP%20Keywords.csv'
+comp_csv = r'https://raw.githubusercontent.com/WeiZhenLim/2X/main/python_project_2x/logicsource_icp_check/Company%20to%20Exclude.csv'
+industry_csv = r'https://raw.githubusercontent.com/WeiZhenLim/2X/main/python_project_2x/logicsource_icp_check/Industry%20ICP%20Keywords.csv'
 
-comp_to_exclude = list(pd.read_csv(comp_csv)['Company Domain'].unique())
-invalid_industry_keywords = list(pd.read_csv(industry_csv)['Industry Keyword'].unique())
+try:
+    comp_to_exclude = list(pd.read_csv(comp_csv)['Company Domain'].unique())
+    invalid_industry_keywords = list(pd.read_csv(industry_csv)['Industry Keyword'].unique())
+except HTTPError as e:
+    raise Exception("Check and Update Raw GitHub URL.")
 
 # Services & Healthcare ICP Segments and Industry Re-Segmentation Mapping
 services_ICP_segment = ['Consumer Services', 'Retail', 'Hospitality', 
@@ -41,7 +41,7 @@ ind_resegment = {'Retail + CPG' : ['Consumer Services', 'Retail'],
 # New update on Feb 15, 2024 by Lim Wei Zhen -> To add a new column to mark our ownership and one new column for IPQS Check
 
 # ZI Raw Data Preprocessing
-def zi_preprocessing(data, filename="", is_company=True):
+def _zi_preprocessing(data, filename="", is_company=True):
     """
     This function is used to preprocess ZI Data for the later stage \n
     data = ZI Data \n
@@ -106,7 +106,7 @@ def zi_preprocessing(data, filename="", is_company=True):
     return data
 
 # ZI Industry Check
-def industry_check(row):
+def _industry_check(row):
     """
     This function will check for the industry ICP based on the following criteria and return a list that can be used for another function.
     1. Loop through the list of industry from the 4 industry columns in ZI
@@ -153,7 +153,7 @@ def zi_icp_check(data, filename="", is_company=True):
     """
 
     # Preprocessing data for ICP Check
-    data = zi_preprocessing(data, filename, is_company)
+    data = _zi_preprocessing(data, filename, is_company)
 
     # ------------------------------------------------------------------------------------------
 
@@ -230,7 +230,7 @@ def zi_icp_check(data, filename="", is_company=True):
             return ""
     
     # Call industry_check
-    data['Industry_ICP_Check_List'] = data['ZI Industry List'].apply(lambda x: industry_check(x))
+    data['Industry_ICP_Check_List'] = data['ZI Industry List'].apply(lambda x: _industry_check(x))
 
     data['Remark'] = data.apply(industry_ICP_check, axis=1)
 
