@@ -7,8 +7,8 @@ def read_check(filepath_read, is_company, output_path, output_filename):
     """
     This function checks the ZI purchased companies/contacts based on LogicSource's ICP and export two output,
     depending on the condition: 
-    1. For ZI purchased companies, only export HubSpot format.
-    2. For ZI purchased contacts, export HubSpot format and list of email for IPQS.\n
+    1. For ZI purchased companies, only export result HubSpot format.
+    2. For ZI purchased contacts, export result in HubSpot format and list of email for IPQS.\n
     ---
     Parameters: \n
     `filepath_read` = Path for ZI Purchased Companies/Contacts CSV File \n
