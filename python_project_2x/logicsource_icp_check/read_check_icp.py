@@ -19,12 +19,27 @@ def read_check(filepath_read, is_company, output_path, output_filename):
     df = pd.read_csv(filepath_read)
 
     # check
-    df_check = zi_icp_check(df, filepath_read, is_company)
- 
-    # save
+    if is_company:
+        df_check = zi_icp_check(df, filepath_read, is_company)
+    else:
+        df_temp = zi_icp_check(df, filepath_read, is_company) # if not company, return tuple of two
+        df_check = df_temp[0] # index for contact check
+        df_ipqs = df_temp[1] # index for list of email
+
+    # save df_check
     if len(output_filename.split(".")) == 1: #Filename only, not file extension
         df_check.to_csv(os.path.join(output_path, output_filename + ".csv"), index=False)
     elif output_filename.split(".")[1] == "csv": #Filename contains ".csv" extension
         df_check.to_csv(os.path.join(output_path, output_filename), index=False)
     else: #If non CSV File Extension appear
         raise Exception("Incorrect File Extension. Only Accept CSV File Type Or Raw Filename Without Extension.")
+    
+    # save df_ipqs
+    ipqs_prefix = "LS-IPQS-"
+    if not is_company:
+        if len(output_filename.split(".")) == 1: #Filename only, not file extension
+            df_ipqs.to_csv(os.path.join(output_path, ipqs_prefix + output_filename + ".csv"), index=False)
+        elif output_filename.split(".")[1] == "csv": #Filename contains ".csv" extension
+            df_ipqs.to_csv(os.path.join(output_path, ipqs_prefix + output_filename), index=False)
+        else: #If non CSV File Extension appear
+            raise Exception("Incorrect File Extension. Only Accept CSV File Type Or Raw Filename Without Extension.")
