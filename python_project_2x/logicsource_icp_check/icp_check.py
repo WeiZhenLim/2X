@@ -355,7 +355,7 @@ def zi_icp_check(data, filename="", is_company=True):
 
     if not is_company:
         data_contact = data[output_col_contact]
-        email_contact = data['Email Address'] # get email for IPQS
+        email_contact = data[['Email Address']] # get email for IPQS
         email_contact = email_contact.rename(columns={'Email Address': 'email'}) # format for IPQS
         return data_contact, email_contact
     else:
