@@ -19,7 +19,7 @@ try:
 except HTTPError as e:
     raise Exception("Check and Update Raw GitHub URL.")
 
-# Services & Healthcare ICP Segments and Industry Re-Segmentation Mapping
+# Services & Healthcare ICP Segments and Lead Segment HS Mapping
 services_ICP_segment = ['Consumer Services', 'Retail', 'Hospitality', 
                         'Finance', 'Manufacturing', 'Insurance', 'Media & Internet']
 
@@ -77,13 +77,13 @@ def _zi_preprocessing(data, filename="", is_company=True):
                         'LinkedIn Company Profile URL', 'Facebook Company Profile URL', 'Twitter Company Profile URL', 
                         'Company Street Address', 'Company City', 'Company State', 'Company Zip Code', 'Company Country']].copy()
         else:
-            data = data[['First Name', 'Middle Name', 'Last Name', 'Job Title', 'Job Function', 'Management Level', 
+            data = data[['First Name', 'Last Name', 'Job Title', 'Job Function', 'Management Level', 
                         'Email Address', 'Email Domain', 'Direct Phone Number', 'LinkedIn Contact Profile URL', 
                         'Person Street', 'Person City', 'Person State', 'Person Zip Code', 'Country', 
                         'Company Name', 'Website', 'Company HQ Phone', 'Revenue (in 000s USD)', 'Revenue Range (in USD)', 
                         'Primary Industry', 'Primary Sub-Industry', 'All Industries', 'All Sub-Industries', 
                         'LinkedIn Company Profile URL', 'Facebook Company Profile URL', 'Twitter Company Profile URL',
-                        'Company Street Address', 'Company City', 'Company State', 'Company Zip Code', 'Company Country', 'Full Address']].copy()
+                        'Company Street Address', 'Company City', 'Company State', 'Company Zip Code', 'Company Country']].copy()
     except KeyError:
         print(f"Check for the following:")
         print(f"1. Input data (file) matches with the 'is_company` parameter. If `is_company` = True (By default is True), input data = ZI Company Data; If `is_company` = False, input data = ZI Contact Data")
@@ -98,10 +98,10 @@ def _zi_preprocessing(data, filename="", is_company=True):
     # Get domain
     data['Company Domain'] = data['Website'].apply(lambda x: domain_extract.extract(x).domain + "." + domain_extract.extract(x).suffix)
 
-    # Add column for industry standardized, lead segment HS & Industry Re-Segmentation
+    # Add column for industry standardized, (2X)Lead Segment Nov 2023S & Lead Segment HS
     data['Industry (Standardized)'] = ""
+    data['(2X)Lead Segment Nov 2023'] = ""
     data['Lead Segment HS'] = ""
-    data['Industry Re-Segmentation'] = ""
 
     # Add column for validation/check
     data['Valid/Invalid'] = ""
@@ -289,7 +289,7 @@ def zi_icp_check(data, filename="", is_company=True):
 
     # ------------------------------------------------------------------------------------------
 
-    # Industry Re-Segmentation
+    # Lead Segment HS
     def resegmentation_ICP(row):
         if row['Remark'] == "Manual Check for Industry":
             return ""
@@ -300,22 +300,22 @@ def zi_icp_check(data, filename="", is_company=True):
             if row['Industry (Standardized)'] in ind:
                 return seg
 
-    data['Industry Re-Segmentation'] =  data.apply(resegmentation_ICP, axis=1)
+    data['Lead Segment HS'] =  data.apply(resegmentation_ICP, axis=1)
 
     # ------------------------------------------------------------------------------------------
 
-    # Lead Segment HS
-    def lead_segment_hs(row):
+    # (2X)Lead Segment Nov 2023
+    def lead_segment_nov23(row):
         if row['Remark'] == "Manual Check for Industry":
             return ""
         elif row['Remark'] != "":
             return "Non ICP"
-        elif row['Industry Re-Segmentation'] == "Healthcare":
+        elif row['Lead Segment HS'] == "Healthcare":
             return "Healthcare"
         else:
             return "Services"
         
-    data['Lead Segment HS'] = data.apply(lead_segment_hs, axis=1)
+    data['(2X)Lead Segment Nov 2023'] = data.apply(lead_segment_nov23, axis=1)
 
     # ------------------------------------------------------------------------------------------
 
@@ -332,15 +332,15 @@ def zi_icp_check(data, filename="", is_company=True):
 
     
     # Get relevant columns for Contact ICP Check
-    output_col_contact = ['First Name', 'Middle Name', 'Last Name', 'Job Title', 'Job Role (Standardized)', 'Job Function', 'Management Level', 
+    output_col_contact = ['First Name', 'Last Name', 'Job Title', 'Job Role (Standardized)', 'Job Function', 'Management Level', 
                           'Email Address', 'Email Domain', 'Direct Phone Number', 'LinkedIn Contact Profile URL', 
                           'Person Street', 'Person City', 'Person State', 'Person Zip Code', 'Country', 
                           'Company Name', 'Website', 'Company Domain', 'Company HQ Phone', 
                           'Revenue (in 000s USD)', 'Revenue Range (in USD)', 
                           'Primary Industry', 'Primary Sub-Industry', 'All Industries', 'All Sub-Industries', 
-                          'Industry (Standardized)', 'Lead Segment HS', 'Industry Re-Segmentation',
+                          'Industry (Standardized)', '(2X)Lead Segment Nov 2023', 'Lead Segment HS',
                           'LinkedIn Company Profile URL', 'Facebook Company Profile URL', 'Twitter Company Profile URL', 
-                          'Company Street Address', 'Company City', 'Company State', 'Company Zip Code', 'Company Country', 'Full Address',
+                          'Company Street Address', 'Company City', 'Company State', 'Company Zip Code', 'Company Country',
                           'Membership Note', 'Source (Self-Define)', 'Enrich/Expand By 2X (YYYYMMDD)', 'IPQS Check',
                           'Valid/Invalid', 'Remark', 'Source-Checked On (YYYYMMDD)']
 
@@ -348,7 +348,7 @@ def zi_icp_check(data, filename="", is_company=True):
     output_col_comp = ['Company Name', 'Website', 'Company Domain', 'Company HQ Phone', 
                        'Revenue (in 000s USD)', 'Revenue Range (in USD)',
                        'Primary Industry', 'Primary Sub-Industry', 'All Industries', 'All Sub-Industries', 
-                       'Industry (Standardized)', 'Lead Segment HS', 'Industry Re-Segmentation', 
+                       'Industry (Standardized)', '(2X)Lead Segment Nov 2023', 'Lead Segment HS', 
                        'LinkedIn Company Profile URL', 'Facebook Company Profile URL', 'Twitter Company Profile URL',
                        'Company Street Address', 'Company City', 'Company State', 'Company Zip Code', 'Company Country', 'Enrich/Expand By 2X (YYYYMMDD)', 'IPQS Check',
                        'Valid/Invalid', 'Remark', 'Source-Checked On (YYYYMMDD)']
