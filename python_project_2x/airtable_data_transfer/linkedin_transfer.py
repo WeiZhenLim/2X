@@ -11,6 +11,7 @@ campaign_obj = {"Awareness" : ["Brand awareness"],
                 "Consideration" : ["Website visits", "Engagement", "Video views", "Messaging"],
                 "Conversions" : ["Lead generation", "Talent leads", "Website conversions", "Job applicants"]}
 
+# NOTE: Sub-Functions (Functions that will be called in the Main Function)
 
 # Function to extract url's components (website and utm parameters)
 def _url_to_website_utm(url, component):
@@ -80,6 +81,54 @@ def _campaign_keywords_mapping(row):
     
     raise ValueError(f"Invalid Objective Found {cpg_obj}. Please Check the Exported CSV File")
 
+# Function to clean column names for the dataset
+def _clean_column_names(data):
+    """
+    This function is used to clean column names for the dataset and returns the cleaned data. \n
+    ----------------------------------------------------------------
+    Parameters:\n
+    `data` = pandas data frame \n
+    """
+    # Create a copy of the input data frame
+    data = data.copy()
+
+    # Get a list of column names
+    col_names = data.columns.tolist()
+
+    # Pattern to retain
+    pattern = r"[^a-zA-Z0-9() ]+"
+
+    # Clean the column names by removing all symbols except parenthesis
+    col_names = [re.sub(pattern, "", col) for col in col_names]
+
+    # Replace the column names
+    data.columns = col_names
+
+    return data
+
+# "Ad name" and "Creative Name" columns validation
+def _validate_ad_name(row):
+    """
+    This function is used to validate the "Ad name" column from `df_report` and "Creative Name" column from `df_bulk` based
+    on the following criteria:
+    1. If "Ad name" == "Creative Name", return "Ad name".
+    2. If "Ad name" == "", return "Creative Name".
+    3. If "Creative Name" == "", return "Ad name".
+    4. If both "Ad name" and "Creative Name" == "", return "".
+    """
+    if row['Ad name'] == row['Creative Name']:
+        return row['Ad name']
+    elif row['Ad name'] == "":
+        return row['Creative Name']
+    elif row['Creative Name'] == "":
+        return row['Ad name']
+    else:
+        return ""
+
+"""--------------------------------------------------------------------------------------------------------------------------------"""
+
+# NOTE: Main Functions
+    
 # Function to check the number of campaign groups, campaign, and ads
 def check_export_count(data, col_list=['Campaign Group ID', 'Campaign ID', 'Ad ID']):
     """
@@ -128,31 +177,6 @@ def get_launch_completed_date(data):
     launch_comp_date = launch_comp_date.droplevel(1, axis=1)
 
     return launch_comp_date
-
-# Function to clean column names for the dataset
-def _clean_column_names(data):
-    """
-    This function is used to clean column names for the dataset and returns the cleaned data. \n
-    ----------------------------------------------------------------
-    Parameters:\n
-    `data` = pandas data frame \n
-    """
-    # Create a copy of the input data frame
-    data = data.copy()
-
-    # Get a list of column names
-    col_names = data.columns.tolist()
-
-    # Pattern to retain
-    pattern = r"[^a-zA-Z0-9() ]+"
-
-    # Clean the column names by removing all symbols except parenthesis
-    col_names = [re.sub(pattern, "", col) for col in col_names]
-
-    # Replace the column names
-    data.columns = col_names
-
-    return data
 
 # Function to preprocess ads performance report data
 def preprocess_ads_performance_report(data):
@@ -229,31 +253,12 @@ def preprocess_ads_bulk_report(data):
 
     return data
 
-# "Ad name" and "Creative Name" columns validation
-def _validate_ad_name(row):
-    """
-    This function is used to validate the "Ad name" column from `df_report` and "Creative Name" column from `df_bulk` based
-    on the following criteria:
-    1. If "Ad name" == "Creative Name", return "Ad name".
-    2. If "Ad name" == "", return "Creative Name".
-    3. If "Creative Name" == "", return "Ad name".
-    4. If both "Ad name" and "Creative Name" == "", return "".
-    """
-    if row['Ad name'] == row['Creative Name']:
-        return row['Ad name']
-    elif row['Ad name'] == "":
-        return row['Creative Name']
-    elif row['Creative Name'] == "":
-        return row['Ad name']
-    else:
-        return ""
-
 # Merge and preprocess the merge data
-def merge_and_preprocess(df_report, df_bulk):
+def merge_and_preprocess(df_launch_completed_date, df_report, df_bulk):
     """
     This function is used to merge and preprocess the merge data.
     The preprocessing steps are:
-    1. Merge the two data frames.
+    1. Merge the three data frames.
     2. Validate the "Ad name" column in `df_report` and "Creative Name" column in df_bulk.
     3. Drop "Ad name" and "Creative Name" columns.
     ----------------------------------------------------------------
@@ -262,11 +267,13 @@ def merge_and_preprocess(df_report, df_bulk):
     `df_bulk` = processed ads bulk report pandas data frame \n
     """
     # Create a copy of the input data frame
+    df_launch_completed_date = df_launch_completed_date.copy()
     df_report = df_report.copy()
     df_bulk = df_bulk.copy()
 
-    # Merge two data frames
+    # Merge three data frames
     df_final = pd.merge(df_report, df_bulk, how='left', on="Ad ID") # Using left merge because bulk export can only export single image and text ads only
+    df_final = pd.merge(df_final, df_launch_completed_date, how='left', on="Ad ID")
 
     # Validate the "Ad name" and "Creative Name" columns
     df_final['Ad Name'] = df_final.apply(_validate_ad_name, axis=1)
@@ -275,6 +282,14 @@ def merge_and_preprocess(df_report, df_bulk):
     df_final.drop(columns=["Ad name", "Creative Name"], inplace=True)
 
     return df_final
+
+# TODO: Create a function that takes in a list of columns to map and reformat the final files into AirTable format.
+def airtable_mapping(data):
+    pass
+
+"""--------------------------------------------------------------------------------------------------------------------------------"""
+
+# NOTE: Testing
 
 # Test Code
 if __name__ == "__main__":
@@ -310,4 +325,3 @@ if __name__ == "__main__":
     df_bulk = preprocess_ads_bulk_report(df_bulk)
 
     print("------------------------------------------------------------------------------------")
-
