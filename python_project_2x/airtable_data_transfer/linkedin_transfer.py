@@ -247,7 +247,6 @@ def _validate_ad_name(row):
         return row['Ad name']
     else:
         return ""
-    
 
 # Merge and preprocess the merge data
 def merge_and_preprocess(df_report, df_bulk):
