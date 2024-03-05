@@ -55,7 +55,7 @@ def compile_csv(folder_path, dest_path, output_filename, first_col=""):
 
             # Tell users how many rows being skipped and how many rows and columns being read
             print(f"Skipping {i} rows")
-            print(f"{csv} contains {df.shape[0]} rows and {df.shape[1]} columns.")
+            print(f">>> {csv} contains {df.shape[0]} rows and {df.shape[1]} columns.\n")
 
             # Append the csv file in df_list
             df_list.append(df)
@@ -75,7 +75,7 @@ def compile_csv(folder_path, dest_path, output_filename, first_col=""):
 
                 # Tell users how many rows being skipped and how many rows and columns being read
                 print(f"Skipping {i} rows")
-                print(f"{csv} contains {df.shape[0]} rows and {df.shape[1]} columns.")
+                print(f">>> {csv} contains {df.shape[0]} rows and {df.shape[1]} columns.\n")
 
                 # Append the csv file in df_list
                 df_list.append(df)
@@ -97,7 +97,7 @@ def compile_csv(folder_path, dest_path, output_filename, first_col=""):
 
     # Export as CSV
     df_final.to_csv(os.path.join(dest_path, date_code_execute + "-" + output_filename), index=False)
-    print(f"Successfully compiled. Total no of rows = {df_final.shape[0]}")
+    print(f">>>> Successfully compiled. Total no of rows = {df_final.shape[0]} <<<<")
 
     return df_final
 
