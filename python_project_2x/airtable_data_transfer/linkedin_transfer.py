@@ -379,9 +379,6 @@ if __name__ == "__main__":
     date_code_execute = datetime.today().strftime("%Y%m%d")
     df_final.to_csv(os.path.join(dest_folder, date_code_execute + "-Preview 1.csv"), index=False)
     
-    # Export the output into csv
-    df_final.to_csv(os.path.join(dest_folder, "Test.csv"), index=False)
-    
     print("------------------------------------------------------------------------------------")
     print("AirTable Mapping")
 
