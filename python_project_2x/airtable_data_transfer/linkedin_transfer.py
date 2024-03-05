@@ -3,8 +3,8 @@ from IPython.display import display
 import urllib.parse as urlparse
 from urllib.parse import parse_qs
 import os
-import sys
 import re
+from datetime import datetime
 
 # Objective Keywords Mapping Dictionary {"Stage": "Objective Keywords"}
 campaign_obj = {"Awareness" : ["Brand awareness"],
@@ -213,10 +213,10 @@ def preprocess_ads_performance_report(data):
     # Subset relevant columns
     req_col = ["Account Name", 
                "Campaign Group ID", "Campaign Group Name", "Campaign Group Status", 
-               "Campaign ID", "Campaign Name", "Campaign Objective", "Campaign Type", "Campaign Status", 
-               "Cost Type",
+               "Campaign ID", "Campaign Name", "Campaign Type", "Campaign Status", "Stage", "Cost Type",
                "Creative Name", "Ad ID",
-               "Sponsored Update Type", "DSC Name", "Video Length (in Seconds)"]
+               "Sponsored Update Type", "DSC Name", "Video Length (in Seconds)",
+               "Website URL", "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id"]
     data = data[req_col]
 
     # Drop duplicates
@@ -245,7 +245,7 @@ def preprocess_ads_bulk_report(data):
     # Subset relevant columns
     req_col = ["Account ID",
                "Creative ID", "Creative Status", "Ad format", "Ad name", 
-               "Introductory", "Headline", "Description", "Call to action", "Destination URL"]
+               "Introductory", "Headline", "Description", "Call to action"]
     data = data[req_col]
 
     # Rename the "Creative ID" column to "Ad ID"
@@ -261,6 +261,8 @@ def merge_and_preprocess(df_launch_completed_date, df_report, df_bulk):
     1. Merge the three data frames.
     2. Validate the "Ad name" column in `df_report` and "Creative Name" column in df_bulk.
     3. Drop "Ad name" and "Creative Name" columns.
+    4. Create "Platform" and "Label" columns for AirTable.
+    4. Sort the columns in a intuitive manner.
     ----------------------------------------------------------------
     Parameters: \n
     `df_report` = processed ads performance report pandas data frame \n
@@ -281,11 +283,53 @@ def merge_and_preprocess(df_launch_completed_date, df_report, df_bulk):
     # Drop "Ad name" and "Creative Name" columns
     df_final.drop(columns=["Ad name", "Creative Name"], inplace=True)
 
+    # Create "Platform" and "Label" columns for AirTable
+    df_final['Platform'] = "LinkedIn"
+    df_final['Label'] = "Show"
+
+    # Sort the columns in a intuitive manner
+    col_sort = ["Platform", "Label", "Account ID", "Account Name", 
+                "Campaign Group ID", "Campaign Group Name", "Campaign Group Status", 
+                "Campaign ID", "Campaign Name", "Stage", "Campaign Type", "Cost Type", "Sponsored Update Type", "Campaign Status", 
+                "Ad ID", "Ad Name", "Ad format", "Creative Status", "Launch date", "Completed date", 
+                "Introductory", "Headline", "Description", "Call to action", 
+                "Website URL", "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id", 
+                "DSC Name", "Video Length (in Seconds)"]
+    
+    df_final = df_final[col_sort]
+
     return df_final
 
-# TODO: Create a function that takes in a list of columns to map and reformat the final files into AirTable format.
-def airtable_mapping(data):
-    pass
+# Create a function that takes in a list of columns to map and reformat the final files into AirTable format.
+def airtable_mapping(mapping_file, df_final, airtable_col, dest_folder, filename):
+    """
+    This function takes in a list of columns to map and reformat the final files into AirTable format.
+    ----------------------------------------------------------------
+    Parameters: \n
+    `mapping_file` = list of columns to map (CSV format) \n
+    """
+
+    # Read the csv mapping_file
+    df = pd.read_csv(mapping_file)
+
+    # Drop instances with empty fields in "Columns in AirTable" column
+    df = df[df['Columns in AirTable'].notnull()]
+
+    # Compile the dictionary
+    map_dict = dict(zip(df['Exported Columns'], df['Columns in AirTable']))
+
+    # Rename the columns name for df_final
+    df_final.rename(columns=map_dict, inplace=True)
+
+    # Read AirTable columns CSV files
+    df_airtable_col = pd.read_csv(airtable_col)
+
+    # Merge df_final and df_airtable_col
+    df_final = pd.concat([df_airtable_col, df_final], ignore_index=True)
+
+    # Save df_final as CSV
+    date_code_execute = datetime.today().strftime("%Y%m%d")
+    df_final.to_csv(os.path.join(dest_folder, date_code_execute + "-" + filename.split(".")[0] + ".csv"), index=False)
 
 """--------------------------------------------------------------------------------------------------------------------------------"""
 
@@ -305,15 +349,19 @@ if __name__ == "__main__":
 
     folder_path_report = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\airtable_data_transfer\Ad Performance Export Example"
     folder_path_bulk = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\airtable_data_transfer\Ads Bulk Export Example"
-    dest_folder = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\airtable_data_transfer"
+    dest_folder = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\02 airtable_data_transfer (LinkedIn)\Test"
 
     print("------------------------------------------------------------------------------------")
+    print("Read Exported Data from LinkedIn Campaign Manager")
 
     # Read Ad Performance Report (Compile if necessary)
     df_report = compile_csv(folder_path_report, dest_folder, "ad_performance_report", "Start Date (in UTC)")
 
     # Read LinkedIn Bulk Report (Compile if necessary)
     df_bulk = compile_csv(folder_path_bulk, dest_folder, "ads_bulk_report", "*Account ID")
+
+    print("------------------------------------------------------------------------------------")
+    print("Preprocess and Compile Export Data from LinkedIn Campaign Manager")
 
     # Get launch and completed date from df_report
     df_launch_completed_date = get_launch_completed_date(df_report)
@@ -324,4 +372,21 @@ if __name__ == "__main__":
     # Preprocess LinkedIn Ads Bulk Report 
     df_bulk = preprocess_ads_bulk_report(df_bulk)
 
+    # Merge and Preprocess all three data frames
+    df_final = merge_and_preprocess(df_launch_completed_date, df_report, df_bulk)
+
+    # Save the merged data frame to csv as "Preview"
+    date_code_execute = datetime.today().strftime("%Y%m%d")
+    df_final.to_csv(os.path.join(dest_folder, date_code_execute + "-Preview 1.csv"), index=False)
+    
+    # Export the output into csv
+    df_final.to_csv(os.path.join(dest_folder, "Test.csv"), index=False)
+    
     print("------------------------------------------------------------------------------------")
+    print("AirTable Mapping")
+
+    mapping_file = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\airtable_data_transfer\AirTable Column Mapping.csv"
+    airtable_col_file = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\airtable_data_transfer\AirTable Column.csv"
+
+    # Reformat df_final to AirTable format
+    airtable_mapping(mapping_file, df_final, airtable_col_file, dest_folder, "Final Output")

@@ -1,0 +1,34 @@
+﻿Exported Columns,Columns in AirTable
+Platform,Platform
+Label,Label
+Account ID,
+Account Name,
+Campaign Group ID,
+Campaign Group Name,
+Campaign Group Status,
+Campaign ID,Campaign ID
+Campaign Name,Campaign name
+Stage,Stage
+Campaign Type,
+Cost Type,
+Sponsored Update Type,
+Campaign Status,
+Ad ID,Ad ID
+Ad Name,Ad Name
+Ad format,Ad type
+Creative Status,
+Launch date,Launch date/month
+Completed date,
+Introductory,Introduction Text
+Headline,Headline Text
+Description,
+Call to action,
+Website URL,Website URL
+utm_source,utm_source
+utm_medium,utm_medium
+utm_campaign,utm_campaign
+utm_content,utm_content
+utm_term,utm_term
+utm_id,utm_id
+DSC Name,
+Video Length (in Seconds),
