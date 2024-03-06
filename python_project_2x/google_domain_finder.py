@@ -72,3 +72,10 @@ def scrape_comp_domain(filepath, domain_to_exclude_file=""):
     filename = os.path.basename(filepath).split(".")[0]
 
     df.to_csv(os.path.join(output_path, filename + " - Output.csv"), index=False)
+
+# NOTE: Test Run
+if __name__ == '__main__':
+    file_input = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\03 google domain finder\Google Domain Test Input.csv"
+    domain_exclude = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\03 google domain finder\Company Domain to Exclude.csv"
+
+    scrape_comp_domain(file_input, domain_exclude)
