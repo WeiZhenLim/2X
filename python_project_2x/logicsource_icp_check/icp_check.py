@@ -357,7 +357,7 @@ def zi_icp_check(data, filename="", is_company=True):
     # Source File = https://2xmarketing-my.sharepoint.com/:x:/g/personal/weizhen_lim_2x_marketing/EfDKbx_4CHNJutawnpmp8EcB1RS3rHSTDgzBcDCyBuGNRg?e=F21UCY
     comp_dict_rename = {"Website": "Website URL", "Company Domain": "Company Domain Name", "Company HQ Phone": "Phone number", 
                         "Revenue (in 000s USD)": "Annual Revenue", "Revenue Range (in USD)": "Annual Revenue Range", 
-                        "Primary Industry": "Industry", "Primary Sub-Industry": "Sub-industry", "All Industries": "All Industry", "All Sub-Industries": "All Sub-Industry", 
+                        "Primary Industry": "Industry", "Primary Sub-Industry": "Sub-Industry", "All Industries": "All Industry", "All Sub-Industries": "All Sub-Industry", 
                         "(2X)Lead Segment Nov 2023": "Account Segment Nov 2023", "Lead Segment HS": "Account Segment HS", 
                         "LinkedIn Company Profile URL": "LinkedIn Company Page", "Facebook Company Profile URL": "Facebook Company Page", 
                         "Twitter Company Profile URL": "Twitter Handle", "Company Street Address": "Street Address", 
