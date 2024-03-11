@@ -353,8 +353,26 @@ def zi_icp_check(data, filename="", is_company=True):
                        'Company Street Address', 'Company City', 'Company State', 'Company Zip Code', 'Company Country', 'Enrich/Expand By 2X (YYYYMMDD)', 'IPQS Check',
                        'Valid/Invalid', 'Remark', 'Source-Checked On (YYYYMMDD)']
 
+    # NOTE: The following dictionary is the reformatted version of the column definition for both company and contact datasets (Reformatted on Mar 11, 2024)
+    # Source File = https://2xmarketing-my.sharepoint.com/:x:/g/personal/weizhen_lim_2x_marketing/EfDKbx_4CHNJutawnpmp8EcB1RS3rHSTDgzBcDCyBuGNRg?e=F21UCY
+    comp_dict_rename = {"Website": "Website URL", "Company Domain": "Company Domain Name", "Company HQ Phone": "Phone number", 
+                        "Revenue (in 000s USD)": "Annual Revenue", "Revenue Range (in USD)": "Annual Revenue Range", 
+                        "Primary Industry": "Industry", "Primary Sub-Industry": "Sub-industry", "All Industries": "All Industry", "All Sub-Industries": "All Sub-Industry", 
+                        "(2X)Lead Segment Nov 2023": "Account Segment Nov 2023", "Lead Segment HS": "Account Segment HS", 
+                        "LinkedIn Company Profile URL": "LinkedIn Company Page", "Facebook Company Profile URL": "Facebook Company Page", 
+                        "Twitter Company Profile URL": "Twitter Handle", "Company Street Address": "Street Address", 
+                        "Company City": "City", "Company State": "State/Region", "Company Zip Code": "Postal Code", "Company Country": "Country/Region", "Remark": "2x Notes"}
+    
+    contact_dict_rename = {"Job Role (Standardized)": "Job Role", "Email Address": "Email", "Direct Phone Number": "Phone Number", "LinkedIn Contact Profile URL": "LinkedIn", 
+                           "Person Street": "Street Address", "Person City": "City", "Person State": "State/Region", "Person Zip Code": "Postal Code", 
+                           "Country": "Country/Region", "Website": "Website URL", "Primary Industry": "Industry", "Membership Note": "Membership Notes", 
+                           "Source (Self-Define)": "Source Type"}
+
+
     if not is_company:
         data_contact = data[output_col_contact]
+        # Reformat of contact fields
+        data_contact = data_contact.rename(columns=contact_dict_rename)
 
         email_contact = data[data['Remark'] != "Person Not In US/CA"][['Email Address']] # get email for IPQS
         email_contact = email_contact.rename(columns={'Email Address': 'email'}) # format for IPQS
@@ -362,6 +380,8 @@ def zi_icp_check(data, filename="", is_company=True):
         return data_contact, email_contact
     else:
         data_comp = data[output_col_comp]
+        # Reformat of company fields
+        data_comp = data_comp.rename(columns=comp_dict_rename)
 
         return data_comp
 
