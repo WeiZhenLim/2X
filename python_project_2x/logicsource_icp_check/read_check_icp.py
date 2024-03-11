@@ -57,7 +57,7 @@ def _test_company():
 
 def _contact_company():
     filepath_read = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\05 LS zi ICP check\ZI Contact Purchase.csv"
-    is_company = True
+    is_company = False
     output_path = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\05 LS zi ICP check"
     output_filename = "Testing-Contact.csv"
 
