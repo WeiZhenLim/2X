@@ -45,3 +45,27 @@ def read_check(filepath_read, is_company, output_path, output_filename):
             df_ipqs.to_csv(os.path.join(output_path, ipqs_prefix + output_filename), index=False)
         else: #If non CSV File Extension appear
             raise Exception("Incorrect File Extension. Only Accept CSV File Type Or Raw Filename Without Extension.")
+
+# NOTE: Functions for Test Run
+def _test_company():
+    filepath_read = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\05 LS zi ICP check\ZI Company Purchase.csv"
+    is_company = True
+    output_path = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\05 LS zi ICP check"
+    output_filename = "Testing-Company"
+
+    read_check(filepath_read, is_company, output_path, output_filename)
+
+def _contact_company():
+    filepath_read = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\05 LS zi ICP check\ZI Contact Purchase.csv"
+    is_company = True
+    output_path = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\05 LS zi ICP check"
+    output_filename = "Testing-Contact.csv"
+
+    read_check(filepath_read, is_company, output_path, output_filename)
+
+# NOTE: Test Run
+if __name__ == "__main__":
+    _test_company()
+    print("Done testing for company info.")
+    _contact_company()
+    print("Done testing for contact info.")
