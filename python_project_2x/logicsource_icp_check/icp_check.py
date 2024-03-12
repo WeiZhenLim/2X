@@ -365,8 +365,8 @@ def zi_icp_check(data, filename="", is_company=True):
     
     contact_dict_rename = {"Job Role (Standardized)": "Job Role", "Job Function": "Job function", "Email Address": "Email", "Direct Phone Number": "Phone Number", 
                            "LinkedIn Contact Profile URL": "LinkedIn", "Person Street": "Street Address", "Person City": "City", "Person State": "State/Region", 
-                           "Person Zip Code": "Postal Code", "Country": "Country/Region", "Website": "Website URL", "Primary Industry": "Industry", 
-                           "Membership Note": "Membership Notes", "Source (Self-Define)": "Source Type"}
+                           "Person Zip Code": "Postal Code", "Country": "Country/Region", "Website": "Website URL", "Company Domain": "Company website",
+                           "Primary Industry": "Industry", "Membership Note": "Membership Notes", "Source (Self-Define)": "Source Type"}
 
 
     if not is_company:
