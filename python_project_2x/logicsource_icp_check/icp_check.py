@@ -330,6 +330,12 @@ def zi_icp_check(data, filename="", is_company=True):
 
     data['Valid/Invalid'] = data['Remark'].apply(lambda x: valid_invalid(x))
 
+
+    # ------------------------------------------------------------------------------------------
+
+    # Label Remark column if Empty
+    data['Remark'] = data['Remark'].apply(lambda x: "Valid" if x == "" else x)
+
     
     # Get relevant columns for Contact ICP Check
     output_col_contact = ['First Name', 'Last Name', 'Job Title', 'Job Role (Standardized)', 'Job Function', 'Management Level', 
