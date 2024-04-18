@@ -23,9 +23,9 @@ except HTTPError as e:
 services_ICP_segment = ['Consumer Services', 'Retail', 'Hospitality', 
                         'Finance', 'Manufacturing', 'Insurance', 'Media & Internet']
 
-healthcare_ICP_segment = ['Ambulance Services', 'Blood & Organ Banks', 'Elderly Care Services', 'Medical Laboratories & Imaging Center',
-                          'Dental Offices', 'Medical & Surgical Hospitals', 'Medical Specialists', 'Physicians Clinics', 
-                          'Hospitals & Physicians Clinics'] 
+healthcare_ICP_segment = ['Ambulance Services', 'Blood & Organ Banks', 'Elderly Care Services', 'Medical Laboratories & Imaging Center', 
+                          'Medical Laboratories & Imaging Centers', 'Dental Offices', 'Medical & Surgical Hospitals', 'Medical Specialists', 
+                          'Physicians Clinics', 'Hospitals & Physicians Clinics'] 
 # Take note that "Hospitals & Physicians Clinics" is not ICP segment but its a keyword for "Physicians Clinics" 
 
 # Latest resegmentation as of Feb 7, 2024
