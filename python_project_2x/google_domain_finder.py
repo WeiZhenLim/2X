@@ -4,13 +4,14 @@ import tldextract
 import os
 
 # print notes for user when import
-print("""
-Things to Take Notes when Using Google Domain Finder: \n
-1. This function only supports CSV file. Please convert your excel file to CSV UTF-8. \n
-2. The list of companies shall be saved with a column title of "Company Name". \n
-3. For better performance, clean your dataset and identify the list of companies with no website. Instead of scraping for all the companies in the dataset. \n
-4. By default, this code excludes "stackoverflow", "youtube", "facebook", "twitter", "linkedin", and "wikipedia". To suppress any additional domain, upload the list of domain in CSV.
-""")
+def _print_info():
+    print("""
+    Things to Take Notes when Using Google Domain Finder: \n
+    1. This function only supports CSV file. Please convert your excel file to CSV UTF-8. \n
+    2. The list of companies shall be saved with a column title of "Company Name". \n
+    3. For better performance, clean your dataset and identify the list of companies with no website. Instead of scraping for all the companies in the dataset. \n
+    4. By default, this code excludes "stackoverflow", "youtube", "facebook", "twitter", "linkedin", and "wikipedia". To suppress any additional domain, upload the list of domain in CSV.
+    """)
 
 def scrape_comp_domain(filepath, domain_to_exclude_file=""):
     """
