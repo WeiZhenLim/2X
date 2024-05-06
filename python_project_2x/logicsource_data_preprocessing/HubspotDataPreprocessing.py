@@ -83,3 +83,11 @@ if __name__ == '__main__':
     output_filename = "HubSpot Company Database Preprocessing.xlsx"
 
     preprocess_company_data(filename, dest_folder, output_filename)
+
+# NOTE: Test case for preprocess_company_data, for output_filename with extension
+if __name__ == '__main__':
+    filename = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\06 LS HubSpot Company Data Preprocessing\hubspot-crm-exports-all-companies-2024-05-06-csv.csv"
+    dest_folder = r'C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\06 LS HubSpot Company Data Preprocessing'
+    output_filename = "HubSpot Company Database Preprocessing 2"
+
+    preprocess_company_data(filename, dest_folder, output_filename)
