@@ -25,7 +25,7 @@ def preprocess_company_data(filename, dest_folder, output_filename):
 
     Output:
     The preprocessed company data is saved in the destination folder with the specified output filename. In the output
-    Excel file, there will be a total of 5 sheets, where the "Notes" sheet shall contain the description of each sheet.
+    Excel file, there will be a total of 6 sheets, where the "Notes" sheet shall contain the description of each sheet.
     """
 
     # Validate the file type from filename
@@ -40,11 +40,12 @@ def preprocess_company_data(filename, dest_folder, output_filename):
 
     # Sheet 1: Notes
     note_dict = {"Notes:": 
-                 ['1. The first tab, "Notes" is used to describe the meaning of each sheet in the output file.', 
+                 ['1. The first tab, "Notes" is used to describe the function of each sheet in the output file.', 
                   '2. The second tab, "Non ICP & PE Firm" is the HubSpot Company Database filtered by "2X Tracker" = "Non ICP" or "PE Firm". The companies in this tab can be ignored for expansion, unless there is a change in ICP (Dated back Nov 2023)',
                   '3. The third tab, "Further Enrich/Expand" is the HubSpot Company Database filtered by "2X Tracker" = "Further Enrich/Expand". The companies in this tab will be used as the list of companies for the Database Re-Expansion.',
                   '4. The fourth tab, "Not Found In ZI" is the HubSpot Company Database filtered by "2X Tracker" = "Not Found In ZI". The companies in this tab can be temporarily ignored, only used this list of companies if there are no more list to expand.',
-                  '5. The fifth tab, "Done" is the HubSpot Company Database filtered by "2X Tracker" = "Done". The companies in this tab are the list of companies that have been completed the Database Re-Expansion.']}
+                  '5. The fifth tab, "Done" is the HubSpot Company Database filtered by "2X Tracker" = "Done". The companies in this tab are the list of companies that have been completed the Database Re-Expansion.',
+                  '6. The sixth tab, "All" is the HubSpot Company Database without any filters applied.']}
     df1 = pd.DataFrame(note_dict)
 
     # Sheet 2: Non ICP & PE Firm
@@ -59,6 +60,9 @@ def preprocess_company_data(filename, dest_folder, output_filename):
     # Sheet 5: Done
     df5 = df_comp[df_comp["2X Tracker"] == "Done"]
 
+    # Sheet 6: All
+    df6 = df_comp
+
     # Validate the output_filename input
     output_filename = output_filename.split(".")[0] + ".xlsx"
 
@@ -72,6 +76,7 @@ def preprocess_company_data(filename, dest_folder, output_filename):
         df3.to_excel(writer, sheet_name='Further Enrich OR Expand', index=False)
         df4.to_excel(writer, sheet_name='Not Found In ZI', index=False)
         df5.to_excel(writer, sheet_name='Done', index=False)
+        df6.to_excel(writer, sheet_name='All', index=False)
 
     # Inform the user that the preprocessing is completed.
     print(f"The HubSpot Company Database is preprocessed and saved as {output_filename}.")
@@ -112,8 +117,9 @@ def preprocess_contact_data(filename, dest_folder, output_filename):
 
     Output:
     The preprocessed contact data is saved in the destination folder with the specified output filename. In the output
-    Excel file, there will be a total of 2 sheets, where the "Contacts With Email" are all the contacts with email; 
-    "Contacts Without Email" are all the contacts without email and are required to be cleaned.
+    Excel file, there will be a total of 3 sheets, where the "Contacts With Email" are all the contacts with email; 
+    "Contacts Without Email" are all the contacts without email and are required to be cleaned; "All Contacts" are 
+    all the contacts from HubSpot.
     """
 
     # Validate the file type from filename
