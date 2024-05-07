@@ -170,6 +170,7 @@ def preprocess_contact_data(filename, dest_folder, output_filename):
     with pd.ExcelWriter(output_filepath) as writer:
         df_contact_final_email.to_excel(writer, sheet_name='Contacts With Email', index=False)
         df_contact_final_no_email.to_excel(writer, sheet_name='Contacts Without Email', index=False)
+        df_contact_final.to_excel(writer, sheet_name='All Contacts', index=False)
 
     # Inform the user that the preprocessing is completed.
     print(f"The HubSpot Contact Database is preprocessed and saved as {output_filename}.")
