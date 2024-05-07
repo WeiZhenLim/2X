@@ -168,6 +168,7 @@ def preprocess_contact_data(filename, dest_folder, output_filename):
     # Inform the user that the preprocessing is completed.
     print(f"The HubSpot Contact Database is preprocessed and saved as {output_filename}.")
 
+# TEST CASE
 
 # NOTE: Test case for preprocess_company_data, for output_filename with extension
 if __name__ == '__main__':
