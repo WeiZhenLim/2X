@@ -9,8 +9,8 @@ comp_col = ["Record ID", "Company name", "Company Domain Name", "Country/Region"
 
 # List of columns to be subset from the HubSpot Contact Dataset
 contact_col = ["Record ID", "Email", "Email Domain", "Country/Region", 
-               "Job Title", "Job Role", "Job Role (Organic)", "Job Role (Reassigned)", "Seniority", 
-               "Lead Segment", "Lead Segment HS", "Company Name", "Company website", "Industry (Standardized)", 
+               "Job Title", "Job Role", "Job Role (Organic)", "Job Role (Reassigned)", "Management Level", 
+               "Lead Segment HS", "Company Name", "Company website", "Industry (Standardized)", 
                "Marketing contact status", "Membership Notes"]
 
 # NOTE: Create a function to preprocess the company data
