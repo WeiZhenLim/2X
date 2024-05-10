@@ -2,10 +2,10 @@ import pandas as pd
 import os
 
 # List of columns to be subset from the HubSpot Company Dataset
-comp_col = ["Record ID", "Company name", "Company Domain Name", "Country/Region", 
-              "Annual Revenue", "Annual Revenue Range", "Industry (Standardized)", 
-              "Account Segment Nov 2023", "Account Segment HS", 
-              "Enrich/Expand By 2X (YYYYMMDD)", "2x Notes", "2X Tracker"]
+comp_col = ["Record ID", "Company name", "Company Domain Name", "Country/Region", "Annual Revenue", "Annual Revenue Range", 
+            "All Industry", "All Sub-Industry", "Industry", "Sub-Industry", "Industry (Standardized)", "Account Segment HS", 
+            "Account Segment Nov 2023", "Enrich/Expand By 2X (YYYYMMDD)", "2x Notes", "2X Tracker", "Record Source", 
+            "Created by user ID", "Create Date", "Last Salesforce Sync Time"]
 
 # List of columns to be subset from the HubSpot Contact Dataset
 contact_col = ["Record ID", "Email", "Email Domain", "Country/Region", 
