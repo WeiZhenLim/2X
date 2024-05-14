@@ -40,12 +40,13 @@ def preprocess_company_data(filename, dest_folder, output_filename):
 
     # Sheet 1: Notes
     note_dict = {"Notes:": 
-                 ['1. The first tab, "Notes" is used to describe the function of each sheet in the output file.', 
-                  '2. The second tab, "Non ICP & PE Firm" is the HubSpot Company Database filtered by "2X Tracker" = "Non ICP" or "PE Firm". The companies in this tab can be ignored for expansion, unless there is a change in ICP (Dated back Nov 2023)',
-                  '3. The third tab, "Further Enrich/Expand" is the HubSpot Company Database filtered by "2X Tracker" = "Further Enrich/Expand". The companies in this tab will be used as the list of companies for the Database Re-Expansion.',
-                  '4. The fourth tab, "Not Found In ZI" is the HubSpot Company Database filtered by "2X Tracker" = "Not Found In ZI". The companies in this tab can be temporarily ignored, only used this list of companies if there are no more list to expand.',
-                  '5. The fifth tab, "Done" is the HubSpot Company Database filtered by "2X Tracker" = "Done". The companies in this tab are the list of companies that have been completed the Database Re-Expansion.',
-                  '6. The sixth tab, "All" is the HubSpot Company Database without any filters applied.']}
+                 ['1. The 1st tab, "Notes" is used to describe the function of each sheet in the output file.', 
+                  '2. The 2nd tab, "Non ICP & PE Firm" is the HubSpot Company Database filtered by "2X Tracker" = "Non ICP" or "PE Firm". The companies in this tab can be ignored for expansion, unless there is a change in ICP (Dated back Nov 2023)',
+                  '3. The 3rd tab, "Further Enrich/Expand" is the HubSpot Company Database filtered by "2X Tracker" = "Further Enrich/Expand". The companies in this tab will be used as the list of companies for the Database Re-Expansion.',
+                  '4. The 4th tab, "Not Found In ZI" is the HubSpot Company Database filtered by "2X Tracker" = "Not Found In ZI". The companies in this tab can be temporarily ignored, only used this list of companies if there are no more list to expand.',
+                  '5. The 5th tab, "Done" is the HubSpot Company Database filtered by "2X Tracker" = "Done". The companies in this tab are the list of companies that have been completed the Database Re-Expansion.',
+                  '6. The 6th tab, "(Blanks)" is the HubSpot Company Database filtered by "2X Tracker" = "". The companies in this tab are the list of companies that required validation using ZoomInfo based on the ICP. Remember to update the "2X Tracker" after validating the company.',
+                  '7. The 7th tab, "All" is the HubSpot Company Database without any filters applied.']}
     df1 = pd.DataFrame(note_dict)
 
     # Sheet 2: Non ICP & PE Firm
@@ -61,7 +62,10 @@ def preprocess_company_data(filename, dest_folder, output_filename):
     df5 = df_comp[df_comp["2X Tracker"] == "Done"]
 
     # Sheet 6: All
-    df6 = df_comp
+    df6 = df_comp[df_comp["2X Tracker"].isna()]
+
+    # Sheet 7: All
+    df7 = df_comp
 
     # Validate the output_filename input
     output_filename = output_filename.split(".")[0] + ".xlsx"
@@ -76,7 +80,8 @@ def preprocess_company_data(filename, dest_folder, output_filename):
         df3.to_excel(writer, sheet_name='Further Enrich OR Expand', index=False)
         df4.to_excel(writer, sheet_name='Not Found In ZI', index=False)
         df5.to_excel(writer, sheet_name='Done', index=False)
-        df6.to_excel(writer, sheet_name='All', index=False)
+        df6.to_excel(writer, sheet_name='(Blanks)', index=False)
+        df7.to_excel(writer, sheet_name='All', index=False)
 
     # Inform the user that the preprocessing is completed.
     print(f"The HubSpot Company Database is preprocessed and saved as {output_filename}.")
