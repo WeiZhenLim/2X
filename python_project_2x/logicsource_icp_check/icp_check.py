@@ -98,7 +98,7 @@ def _zi_preprocessing(data, filename="", is_company=True):
     # Get domain
     data['Company Domain'] = data['Website'].apply(lambda x: domain_extract.extract(x).domain + "." + domain_extract.extract(x).suffix)
 
-    # Add column for industry standardized, (2X)Lead Segment Nov 2023S & Lead Segment HS
+    # Add column for industry standardized, (2X)Lead Segment Nov 2023 & Lead Segment HS
     data['Industry (Standardized)'] = ""
     data['(2X)Lead Segment Nov 2023'] = ""
     data['Lead Segment HS'] = ""
@@ -388,6 +388,9 @@ def zi_icp_check(data, filename="", is_company=True):
         data_comp = data[output_col_comp]
         # Reformat of company fields
         data_comp = data_comp.rename(columns=comp_dict_rename)
+
+        # Add a new column called "2X Tracker"
+        data_comp["2X Tracker"] = ""
 
         return data_comp
 
