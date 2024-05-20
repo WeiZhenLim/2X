@@ -63,9 +63,24 @@ def _contact_company():
 
     read_check(filepath_read, is_company, output_path, output_filename)
 
+def _may15_update():
+    filepath_read = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\05 LS zi ICP check\Company for May 15 Manufacturing and Retail + CPG Issues.csv"
+    is_company = True
+    output_path = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\05 LS zi ICP check"
+    output_filename = "Testing-Company for May 15 Manufacturing and Retail + CPG Issues"
+
+    read_check(filepath_read, is_company, output_path, output_filename)
+
 # NOTE: Test Run
 if __name__ == "__main__":
-    _test_company()
-    print("Done testing for company info.")
-    _contact_company()
-    print("Done testing for contact info.")
+    
+    # ------------------------------------------------------------------------------------------------
+    # Version 1 Testing
+    # _test_company()
+    # print("Done testing for company info.")
+    # _contact_company()
+    # print("Done testing for contact info.")
+    # ------------------------------------------------------------------------------------------------
+
+    _may15_update()
+    print("Done testing for May 15 update for 'Manufacturing' and 'Retail + CPG'.")
