@@ -13,7 +13,7 @@ contact_col = ["Record ID", "Email", "Email Domain", "First Name", "Last Name", 
                "Lead Segment HS", "(2X)Lead Segment Nov 2023", "Company Name", "Company website", "Industry", "Industry (Standardized)", 
                "2X Tracker - Company Details", "2X Tracker - Contact Details", "2X Tracker - Overall Status",
                "Marketing contact status", "Lifecycle Stage", "Marketing contact status source type", "Membership Notes",
-               "Enrich/Expand By 2X (YYYYMMDD)", "Create Date", "Created by user ID", "Updated by user ID", "Latest Salesforce Sync Time",
+               "Enrich/Expand By 2X (YYYYMMDD)", "Create Date", "Created by user ID", "Updated by user ID", "Last Salesforce Sync Time",
                "Source Type", "Original Source", "Record Source", "Record Source Detail 1", "Latest Source", "Latest Source Date"]
 
 # NOTE: Create a function to preprocess the company data
