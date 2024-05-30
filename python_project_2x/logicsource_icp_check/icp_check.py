@@ -445,6 +445,11 @@ def zi_icp_check(data, filename="", is_company=True):
         # Reformat of contact fields
         data_contact = data_contact.rename(columns=contact_dict_rename)
 
+        # Add Tracker Column
+        data_contact["2X Tracker - Company Details"] = ""
+        data_contact["2X Tracker - Contact Details"] = ""
+        data_contact["2X Tracker - Overall Status"] = ""
+
         email_contact = data[data['Remark'] != "Person Not In US/CA"][['Email Address']] # get email for IPQS
         email_contact = email_contact.rename(columns={'Email Address': 'email'}) # format for IPQS
 
