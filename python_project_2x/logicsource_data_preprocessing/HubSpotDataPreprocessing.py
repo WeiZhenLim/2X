@@ -104,7 +104,7 @@ def _merge_comp_ids(row, id):
         elif type(row[col]) == float:
             result.append(str(int(row[col])))
         else:
-            result.append(row[col])
+            result.append(str(row[col]))
     
     result = ";".join(result)
 
