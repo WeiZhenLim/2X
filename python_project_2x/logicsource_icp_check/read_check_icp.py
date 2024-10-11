@@ -51,7 +51,7 @@ def _test_company():
     filepath_read = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\05 LS zi ICP check\ZI Company Purchase.csv"
     is_company = True
     output_path = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\05 LS zi ICP check"
-    output_filename = "Testing-Company"
+    output_filename = "Testing-Company-Oct11"
 
     read_check(filepath_read, is_company, output_path, output_filename)
 
@@ -59,17 +59,17 @@ def _contact_company():
     filepath_read = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\05 LS zi ICP check\ZI Contact Purchase.csv"
     is_company = False
     output_path = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\05 LS zi ICP check"
-    output_filename = "Testing-Contact.csv"
+    output_filename = "Testing-Contact-Oct11.csv"
 
     read_check(filepath_read, is_company, output_path, output_filename)
 
-def _may15_update():
-    filepath_read = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\05 LS zi ICP check\Company for May 15 Manufacturing and Retail + CPG Issues.csv"
-    is_company = True
-    output_path = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\05 LS zi ICP check"
-    output_filename = "Testing-Company for May 15 Manufacturing and Retail + CPG Issues"
+# def _may15_update():
+#     filepath_read = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\05 LS zi ICP check\Company for May 15 Manufacturing and Retail + CPG Issues.csv"
+#     is_company = True
+#     output_path = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\05 LS zi ICP check"
+#     output_filename = "Testing-Company for May 15 Manufacturing and Retail + CPG Issues"
 
-    read_check(filepath_read, is_company, output_path, output_filename)
+#     read_check(filepath_read, is_company, output_path, output_filename)
 
 # NOTE: Test Run
 if __name__ == "__main__":
@@ -82,5 +82,9 @@ if __name__ == "__main__":
     # print("Done testing for contact info.")
     # ------------------------------------------------------------------------------------------------
 
-    _may15_update()
-    print("Done testing for May 15 update for 'Manufacturing' and 'Retail + CPG'.")
+    # _may15_update()
+    # print("Done testing for May 15 update for 'Manufacturing' and 'Retail + CPG'.")
+
+    _test_company()
+    _contact_company()
+    print("Done testing for Oct 11 Updates")

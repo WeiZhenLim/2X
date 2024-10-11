@@ -114,16 +114,14 @@ def _industry_check(row):
     ind_result = set()
 
     for industry in row: 
-        ind_lower = industry.lower()
 
         for segment, ind_icp in industry_segmentation.items():
-            if ind_lower in ind_icp.lower():
-                if "banking" in ind_lower:
+
+            if industry in ind_icp:
+                if "Banking" in industry:
                     ind_result.add("Banking")
                 else:
                     ind_result.add(segment)
-            else:
-                ind_result.add("Others")
 
     return ind_result
 
@@ -227,18 +225,19 @@ def zi_icp_check(data, filename="", is_company=True, revenue_range = 1000000):
         ind_temp = []
 
         for ind in row['Industry_ICP_Check_List']:  
-
-            ind_title = ind.title()
             
-            if ind_title == "Healthcare": # If it's healthcare keyword, then get the keyword from Healthcare
+            if ind == "Healthcare": # If it's healthcare keyword, then get the keyword from Healthcare
                 for healthcare_ind in row['ZI Industry List']:
                     if healthcare_ind in healthcare_ind_list:
                         if healthcare_ind == "Hospitals & Physicians Clinics":
                             return "Physicians Clinics"
                         return healthcare_ind
             else:
-                ind_temp.append(ind_title)
+                ind_temp.append(ind)
         
+        if len(ind_temp) == 0:
+            return "Manual Check for Industry"
+
         return ind_temp[0]
                 
     data['Industry (Standardized)'] = data.apply(industry_standardized, axis=1)
