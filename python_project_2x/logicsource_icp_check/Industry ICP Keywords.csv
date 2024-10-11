@@ -1,42 +1,119 @@
-﻿Industry Keyword,Source
-Industrial Machinery & Equipment,Yue En's ICP Compilation
-"Rail, Bus and Taxi",Yue En's ICP Compilation
-Oil & Gas Exploration Services,Yue En's ICP Compilation
-Aerospace and Defense,Yue En's ICP Compilation
-Federal,Yue En's ICP Compilation
-Marine Shipping & Transportation,Yue En's ICP Compilation
-Chemicals and Related Products,Yue En's ICP Compilation
-Data Collection & Internet Portals,Yue En's ICP Compilation
-Chemicals & Related Products,Yue En's ICP Compilation
-Freight & Logistics Services,Yue En's ICP Compilation
-Museums & Art Galleries,Yue En's ICP Compilation
-Non-Profit & Charitable Organizations,Yue En's ICP Compilation
-Cultural & Informational Centers,Yue En's ICP Compilation
-Colleges & Universities,Yue En's ICP Compilation
-Supply Chain Management (SCM) Software,Yue En's ICP Compilation
-SCM Software,Yue En's ICP Compilation
-"Plastic, Packaging & Containers",Yue En's ICP Compilation
-Elderly Care Services,Yue En's ICP Compilation
-Physicians Clinics,Yue En's ICP Compilation
-Medical & Surgical Hospitals,Yue En's ICP Compilation
-Aerospace & Defense,Yue En's ICP Compilation
-Building Materials,Yue En's ICP Compilation
-Crops,Yue En's ICP Compilation
-Telecommunication Equipment,Yue En's ICP Compilation
-Glass & Clay,Yue En's ICP Compilation
-"Waste Treatment, Environmental Services & Recycling",Yue En's ICP Compilation
-Pulp & Paper,Yue En's ICP Compilation
-Management Consulting,Yue En's ICP Compilation
-"Electricity, Oil & Gas",Yue En's ICP Compilation
-Wire & Cable,Yue En's ICP Compilation
-Cable & Satellite,Yue En's ICP Compilation
-Forestry,Yue En's ICP Compilation
-Minerals & Mining,Yue En's ICP Compilation
-Commercial & Residential Construction,Yue En's ICP Compilation
-Animals & Livestock,Yue En's ICP Compilation
-Oil & Gas Exploration & Services,Yue En's ICP Compilation
-Ambulance Services,Yue En's ICP Compilation
-Blood & Organ Banks,Yue En's ICP Compilation
-Medical Laboratories & Imaging Center,Yue En's ICP Compilation
-Dental Offices,Yue En's ICP Compilation
-Medical Specialists,Yue En's ICP Compilation
+﻿Industry Keyword,Segments,Update Date
+Apparel & Accessories Retail,Retail,11-Oct-24
+Consumer Electronics & Computers Retail,Retail,11-Oct-24
+Sporting & Recreational Equipment Retail,Retail,11-Oct-24
+"Convenience Stores, Gas Stations & Liquor Stores",Retail,11-Oct-24
+"Department Stores, Shopping Centers & Superstores",Retail,11-Oct-24
+Drug Stores & Pharmacies,Retail,11-Oct-24
+Grocery Retail,Retail,11-Oct-24
+Home Improvement & Hardware Retail,Retail,11-Oct-24
+Household Goods,Retail,11-Oct-24
+Jewelry & Watch Retail,Retail,11-Oct-24
+Pet Products,Retail,11-Oct-24
+"Record, Video & Book Stores",Retail,11-Oct-24
+Toys & Games,Retail,11-Oct-24
+Supermarkets,Retail,11-Oct-24
+"Vitamins, Supplements & Health Stores",Retail,11-Oct-24
+Wholesale,Retail,11-Oct-24
+Textiles & Apparel,Retail,11-Oct-24
+Cleaning Products,Retail,11-Oct-24
+Office Products Retail & Distribution,Retail,11-Oct-24
+Photographic & Optical Equipment,Retail,11-Oct-24
+Health & Nutrition Products,Retail,11-Oct-24
+Car & Truck Rental,Retail,11-Oct-24
+"Other Rental Stores (Furniture, A/V, Construction & Industrial Equipment)",Retail,11-Oct-24
+Food & Beverage,CPG ,11-Oct-24
+Consumer Goods,CPG ,11-Oct-24
+"Cosmetics, Beauty Supply & Personal Care Products",CPG ,11-Oct-24
+Consumer Services,CPG ,11-Oct-24
+"Flowers, Gifts & Specialty Stores",CPG ,11-Oct-24
+Furniture,CPG ,11-Oct-24
+Sporting Goods,CPG ,11-Oct-24
+Appliances,CPG ,11-Oct-24
+Electronics,CPG ,11-Oct-24
+Barber Shops & Beauty Salons,CPG ,11-Oct-24
+"Hand, Power & Lawn-care Tools",CPG ,11-Oct-24
+Computer Equipment & Peripherals,CPG ,11-Oct-24
+Wellness and Fitness Services,CPG ,11-Oct-24
+Automobile Parts Stores,Manufacturing,11-Oct-24
+Automotive Service & Collision Repair,Manufacturing,11-Oct-24
+Automotive Parts,Manufacturing,11-Oct-24
+Motor Vehicles,Manufacturing,11-Oct-24
+Test & Measurement Equipment,Manufacturing,11-Oct-24
+Tires & Rubber,Manufacturing,11-Oct-24
+Business Services,General,11-Oct-24
+Custom Software & IT Services,General,11-Oct-24
+Facilities Management & Commercial Cleaning,General,11-Oct-24
+Cleaning Services,General,11-Oct-24
+Real Estate,General,11-Oct-24
+Sports,General,11-Oct-24
+Software,General,11-Oct-24
+Media & Internet,General,11-Oct-24
+Auctions,General,11-Oct-24
+Gambling & Gaming,General,11-Oct-24
+Repair Services,General,11-Oct-24
+Childcare,General,11-Oct-24
+Food Service,General,11-Oct-24
+Mobile App Development,General,11-Oct-24
+"Multimedia, Games & Graphics Software",General,11-Oct-24
+Financial Software,General,11-Oct-24
+Engineering Software,General,11-Oct-24
+Content & Collaboration Software,General,11-Oct-24
+Database & File Management Software,General,11-Oct-24
+Broadcasting,General,11-Oct-24
+Advertising & Marketing,General,11-Oct-24
+Networking Software,General,11-Oct-24
+Security Software,General,11-Oct-24
+Storage & System Management Software,General,11-Oct-24
+Research & Development,General,11-Oct-24
+Landscape Services,General,11-Oct-24
+Customer Relationship Management (CRM) Software,General,11-Oct-24
+Chambers of Commerce,General,11-Oct-24
+Commercial Printing,General,11-Oct-24
+"Architecture, Engineering & Design",General,11-Oct-24
+Funeral Homes & Funeral Related Services,General,11-Oct-24
+Information & Document Management,General,11-Oct-24
+Veterinary Services,General,11-Oct-24
+Security Products & Services,General,11-Oct-24
+Telephony & Wireless,General,11-Oct-24
+HR & Staffing,General,11-Oct-24
+Medical & Surgical Hospitals,Healthcare,11-Oct-24
+Healthcare Services,Healthcare,11-Oct-24
+Pharmaceuticals,Healthcare,11-Oct-24
+Hospitals & Physicians Clinics,Healthcare,11-Oct-24
+Medical Devices & Equipment,Healthcare,11-Oct-24
+Healthcare Software,Healthcare,11-Oct-24
+Medical Laboratories & Imaging Centers,Healthcare,11-Oct-24
+Elderly Care Services,Healthcare,11-Oct-24
+Restaurants,Hospitality,11-Oct-24
+Travel Agencies & Services,Hospitality,11-Oct-24
+Lodging & Resorts,Hospitality,11-Oct-24
+"Amusement Parks, Arcades & Attractions",Hospitality,11-Oct-24
+Government,Non ICP,11-Oct-24
+Transportation,Non ICP,11-Oct-24
+Aerospace & Defense,Non ICP,11-Oct-24
+Construction,Non ICP,11-Oct-24
+Agriculture,Non ICP,11-Oct-24
+"Energy, Utilities & Waste",Non ICP,11-Oct-24
+Organizations,Non ICP,11-Oct-24
+"Airlines, Airports & Air Services",Non ICP,11-Oct-24
+Boats & Submarines,Non ICP,11-Oct-24
+Building Materials,Non ICP,11-Oct-24
+Chemicals & Related Products,Non ICP,11-Oct-24
+Civil Engineering Construction,Non ICP,11-Oct-24
+Commercial & Residential Construction,Non ICP,11-Oct-24
+Membership Organizations,Non ICP,11-Oct-24
+Pulp & Paper,Non ICP,11-Oct-24
+"Trucking, Moving & Storage",Non ICP,11-Oct-24
+Freight & Logistics Services,Non ICP,11-Oct-24
+"Plastic, Packaging & Containers",Non ICP,11-Oct-24
+Telecommunication Equipment,Non ICP,11-Oct-24
+Automobile Dealers,Non ICP,11-Oct-24
+Finance,Finance & Insurance,11-Oct-24
+Insurance,Finance & Insurance,11-Oct-24
+Banking,Finance & Insurance,11-Oct-24
+Accounting Services,Finance & Insurance,11-Oct-24
+Financial Services,Finance & Insurance,11-Oct-24
+Investment Banking,Finance & Insurance,11-Oct-24
+Lending & Brokerage,Finance & Insurance,11-Oct-24
+Venture Capital & Private Equity,PE Firm,11-Oct-24

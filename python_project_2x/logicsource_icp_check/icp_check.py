@@ -15,50 +15,29 @@ industry_csv = r'https://raw.githubusercontent.com/WeiZhenLim/2X/main/python_pro
 
 try:
     comp_to_exclude = list(pd.read_csv(comp_csv)['Company Domain'].unique())
-    invalid_industry_keywords = list(pd.read_csv(industry_csv)['Industry Keyword'].unique())
+    
+    industry_segmentation_df = pd.read_csv(industry_csv)[['Industry Keyword', 'Segments']]
+    industry_segmentation = industry_segmentation_df.groupby('Segments')['Industry Keyword'].apply(list).to_dict()
 except HTTPError as e:
     raise Exception("Check and Update Raw GitHub URL.")
 
-# Services & Healthcare ICP Segments and Lead Segment HS Mapping
-services_ICP_segment = ['Consumer Services', 'Retail', 'Hospitality', 
-                        'Finance', 'Manufacturing', 'Insurance', 'Media & Internet']
+# Healthcare Industry
+healthcare_ind_list = ['Ambulance Services', 'Blood & Organ Banks', 'Elderly Care Services', 
+                        'Medical Laboratories & Imaging Center', 'Medical Laboratories & Imaging Centers', 
+                        'Dental Offices', 'Medical & Surgical Hospitals', 'Medical Specialists', 'Physicians Clinics', 
+                        'Hospitals & Physicians Clinics'] 
 
-healthcare_ICP_segment = ['Ambulance Services', 'Blood & Organ Banks', 'Elderly Care Services', 'Medical Laboratories & Imaging Center', 
-                          'Medical Laboratories & Imaging Centers', 'Dental Offices', 'Medical & Surgical Hospitals', 'Medical Specialists', 
-                          'Physicians Clinics', 'Hospitals & Physicians Clinics'] 
-# Take note that "Hospitals & Physicians Clinics" is not ICP segment but its a keyword for "Physicians Clinics" 
-
-# Latest resegmentation as of Feb 7, 2024
-ind_resegment = {'Retail + CPG' : ['Consumer Services', 'Retail'],
-                 'Hospitality': ['Hospitality'],
-                 'Finance & Insurance': ['Finance', 'Insurance'],
-                 'Manufacturing': ['Manufacturing'], 
-                 'General': ['Media & Internet'], 
-                 'Healthcare': healthcare_ICP_segment}
-
-# Create an Output for User to Know the Latest Segmentation
+# Create an Output for User to Download the latest version of the segmentation
 def _print_info():
-    df_service = pd.DataFrame(services_ICP_segment, columns=["Original Industry ICP Segments (Services) - Nov 2023"])
-    df_healthcare = pd.DataFrame(healthcare_ICP_segment, columns=["Original Industry ICP Segments (Healthcare) - Nov 2023"])
-    df_resegmentation = pd.DataFrame({k: [v] for k,v in ind_resegment.items()}, index=["New Resegmentation"]).transpose()
-
-    # Allow Wrap Text
-    pd.set_option('display.max_colwidth', 0)
 
     print("The following are the Industry ICP used for the ICP check (Original Industry ICP dated back to Nov 2023)")
-    display(df_service)
-    display(df_healthcare)
-    print("The following are the latest re-segmentation being used, dated back to Feb 7, 2024.")
-    display(df_resegmentation)
-
-    # Reset Wrap Text
-    pd.reset_option('display.max_colwidth')
-
+    display(industry_segmentation_df.groupby('Segments')['Industry Keyword'])
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------
 
 # This section is completed on Feb 7, 2024 by Lim Wei Zhen
 # New update on Feb 15, 2024 by Lim Wei Zhen -> To add a new column to mark our ownership and one new column for IPQS Check
+# New update on Oct 11, 2024 by Lim Wei Zhen -> Change the way industry is being segmented
 
 # ZI Raw Data Preprocessing
 def _zi_preprocessing(data, filename="", is_company=True):
@@ -128,67 +107,28 @@ def _zi_preprocessing(data, filename="", is_company=True):
 # ZI Industry Check
 def _industry_check(row):
     """
-    This function will check for the industry ICP based on the following criteria and return a list that can be used for another function.
-    1. Loop through the list of industry from the 4 industry columns in ZI
-    2. If healthcare keywords is found, append the keywords into a list (ind_result). Also append "healthcare".
-    3. If services keywords is found, append the keywords into ind_result
-    4. Conditional keywords
-            - For Retail, "Building Materials" & "Telecommunication" are acceptable. Append "retail check" into ind_result if found
-            - If the keyword "Banking" is found, append "banking check" into ind_result
-    5. If keywords in the industry_to_exclude are found, append "invalid" into ind_result
-    6. If the keywords not found in the healthcare_ICP, services_ICP, and industry_to_exclude, append "manual check" into ind_result
-
-    May 15, 2024 - New conditions for ICP checking:
-    1. If "Automobile Dealers" is found, it should be "Manufacturing" and return "retail + CPG to manufacturing".
-    2. If both "Retail" and "Manufacturing" are found in the industry column, and if any of the keywords in `may_15_retail` are found, 
-    it should be "Retail + CPG" and shall return "manufacturing to retail + CPG". Take note that if any of the keywords in `may_15_exclude`
-    appears, it should remain as "Manufacturing". 
+    This function will segment the industry based on the segmentation in the "Industry ICP Keywords.csv" file.
     """
 
-    may_15_retail = ["store", "department", "shopping", "electronics", "apparel", "accessories", "watches", "jewelry", "flowers", "gifts", "cosmetics", "beauty supply",
-                     "toys & games", "sporting goods", "household goods", "furniture", "consumer electronics & computers", "home improvement & hardware",
-                     "cosmetics, beauty supply & personal care products", "flowers, gifts & specialty stores", "vitamins, supplements & health stores",
-                     "health & nutrition products", "department stores, shopping centers & superstores", "watches & jewelry", "jewelry & watch retail",
-                     "textiles & apparel", "sporting & recreational equipment retail", "apparel & accessories retail", "textiles & apparel",
-                     "department stores, shopping centers & superstores", "home improvement & hardware retail", "drug stores & pharmacies",
-                     "consumer electronics & computers retail", "convenience stores, gas stations & liquor stores", "grocery retail", "home improvement & hardware retail",
-                     "record, video & book stores", ]
-    
-    may_15_exclude = ['automobile', 'tires & rubber', 'motor vehicles', 'test & measurement equipment', 'building materials', 'boats & submarines', 'automotive',
-                      'automobile parts stores', "automobile parts stores"]
-
     # create an empty list to store the results 
-    ind_result = []
+    ind_result = set()
 
-    for industry in row: # Step 1
+    for industry in row: 
         ind_lower = industry.lower()
 
-        if ind_lower in [ind_ICP.lower() for ind_ICP in healthcare_ICP_segment]: # Step 2
-            ind_result.append(ind_lower)
-            ind_result.append("healthcare")
-        elif ind_lower in [ind_ICP.lower() for ind_ICP in services_ICP_segment]: # Step 3
-            ind_result.append(ind_lower)
-        elif ind_lower in ['building materials', 'telecommunication equipment']: # Step 4.1
-            ind_result.append("retail check")
-        elif "banking" in ind_lower: # Step 4.2
-            ind_result.append("banking check")
-        elif "automobile dealers" in ind_lower: # May 15, Manufacturing and Retail + CPG Issue
-            ind_result.append("retail + CPG to manufacturing")
-        elif ind_lower in may_15_retail: # May 15, Manufacturing and Retail + CPG Issue
-            ind_result.append("manufacturing to retail + CPG")
-        elif ind_lower in may_15_exclude: # May 15, Manufacturing and Retail + CPG Issue
-            ind_result.append("manufacturing to retail + CPG - exclude")
-        elif ind_lower in [invalid_ind.lower() for invalid_ind in invalid_industry_keywords]: # Step 5
-            ind_result.append("invalid")
-    
-    # Step 6
-    if len(ind_result) == 0: 
-        ind_result.append("manual check")
+        for segment, ind_icp in industry_segmentation.items():
+            if ind_lower in ind_icp.lower():
+                if "banking" in ind_lower:
+                    ind_result.add("Banking")
+                else:
+                    ind_result.add(segment)
+            else:
+                ind_result.add("Others")
 
     return ind_result
 
 # ZI ICP Check
-def zi_icp_check(data, filename="", is_company=True):
+def zi_icp_check(data, filename="", is_company=True, revenue_range = 1000000):
     """
     This function is use to check the ICP for the Company/Contact Data purchased from ZI \n
     data = ZI Company/Contact Data \n
@@ -219,7 +159,7 @@ def zi_icp_check(data, filename="", is_company=True):
     def check_revenue(row):    
         if row['Remark'] != "":
             return row['Remark']
-        elif row['Revenue (in 000s USD)'] < 1000000:
+        elif row['Revenue (in 000s USD)'] < revenue_range:
             return "Invalid Revenue Range"
         else:
             return ""
@@ -260,16 +200,12 @@ def zi_icp_check(data, filename="", is_company=True):
     def industry_ICP_check(row):
         if row['Remark'] != "":
             return row['Remark']
-        elif "healthcare" in row['Industry_ICP_Check_List']:
-            return ""
-        elif "manual check" in row['Industry_ICP_Check_List']:
+        elif "Others" in row['Industry_ICP_Check_List']:
             return "Manual Check for Industry"
-        elif ("retail check" in row['Industry_ICP_Check_List']) and ("retail" not in row['Industry_ICP_Check_List']):
-            return "Invalid Sub-Industry"
-        elif ("banking check" in row['Industry_ICP_Check_List']) and (row['Revenue (in 000s USD)'] > 15000000):
+        elif ("Banking" in row['Industry_ICP_Check_List']) and (row['Revenue (in 000s USD)'] > 15000000):
             return "Invalid Sub-Industry (Banking with Revenue > $15B)"
-        elif "invalid" in row['Industry_ICP_Check_List']:
-            return "Invalid Sub-Industry"
+        elif "Non ICP" in row['Industry_ICP_Check_List']:
+            return "Invalid Industry"
         else:
             return ""
     
@@ -290,22 +226,18 @@ def zi_icp_check(data, filename="", is_company=True):
         # temp holder to consider healthcare keywords appearing in services
         ind_temp = []
 
-        for ind in row['Industry_ICP_Check_List']: # To check for healthcare keyword first 
+        for ind in row['Industry_ICP_Check_List']:  
 
             ind_title = ind.title()
             
-            if (ind_title in healthcare_ICP_segment) and (ind_title == "Hospitals & Physicians Clinics"): # Check for "Hospitals & Physicians Clinics" keyword
-                ind_temp.append("Physicians Clinics")
-            elif ind_title in healthcare_ICP_segment: # Check for healthcare
+            if ind_title == "Healthcare": # If it's healthcare keyword, then get the keyword from Healthcare
+                for healthcare_ind in row['ZI Industry List']:
+                    if healthcare_ind in healthcare_ind_list:
+                        if healthcare_ind == "Hospitals & Physicians Clinics":
+                            return "Physicians Clinics"
+                        return healthcare_ind
+            else:
                 ind_temp.append(ind_title)
-            
-        if len(ind_temp) == 0:
-            for ind in row['Industry_ICP_Check_List']: # If there are no healthcare keyword appear, then only check for services
-                
-                ind_title = ind.title()
-
-                if ind_title in services_ICP_segment: 
-                    ind_temp.append(ind_title)
         
         return ind_temp[0]
                 
@@ -319,53 +251,53 @@ def zi_icp_check(data, filename="", is_company=True):
             return ""
         elif row['Remark'] != "":
             return "Non ICP"
-        
-        for seg, ind in ind_resegment.items():
-            if row['Industry (Standardized)'] in ind:
-                return seg
+        elif row['Industry (Standardized)'] in healthcare_ind_list:
+            return "Healthcare"
+        else:
+            return row['Industry (Standardized)']
 
     data['Lead Segment HS'] =  data.apply(resegmentation_ICP, axis=1)
 
     # ------------------------------------------------------------------------------------------
 
-    # NOTE: May 15, 2024 - New "Manufacturing" and "Retail + CPG" segments criteria
+    # NOTE: May 15, 2024 - New "Manufacturing" and "Retail + CPG" segments criteria (This criteria is removed on Oct 11 2024)
     
-    """
-    1. To check whether "Lead Segment HS" = "Retail + CPG" or "Manufacturing". If yes, then continue.
-    2. If "Lead Segment HS" = "Retail + CPG" and "retail + CPG to manufacturing" in "Industry_ICP_Check_List", 
-    then "Lead Segment HS" and "Industry (Standardized)" = "Manufacturing - Nicole to Check".
-    3. If "Lead Segment HS" = "Manufacturing", `may15_retail_condition` in "Industry_ICP_Check_List", and "manufacturing to retail + CPG - exclude" not in "Industry_ICP_Check_List", 
-    then "Lead Segment HS" = "Retail + CPG" and "Industry (Standardized)" = "Retail".
-    """
+    # """
+    # 1. To check whether "Lead Segment HS" = "Retail + CPG" or "Manufacturing". If yes, then continue.
+    # 2. If "Lead Segment HS" = "Retail + CPG" and "retail + CPG to manufacturing" in "Industry_ICP_Check_List", 
+    # then "Lead Segment HS" and "Industry (Standardized)" = "Manufacturing - Nicole to Check".
+    # 3. If "Lead Segment HS" = "Manufacturing", `may15_retail_condition` in "Industry_ICP_Check_List", and "manufacturing to retail + CPG - exclude" not in "Industry_ICP_Check_List", 
+    # then "Lead Segment HS" = "Retail + CPG" and "Industry (Standardized)" = "Retail".
+    # """
 
-    may15_retail_condition = {"retail", "manufacturing", "manufacturing to retail + CPG"}
+    # may15_retail_condition = {"retail", "manufacturing", "manufacturing to retail + CPG"}
 
-    def may15_ind(row):
-        if (row["Lead Segment HS"] == "Retail + CPG") or (row["Lead Segment HS"] == "Manufacturing"):
-            if (row["Lead Segment HS"] == "Retail + CPG") and ("retail + CPG to manufacturing" in row["Industry_ICP_Check_List"]):
-                return "Manufacturing - Nicole to Check"
-            elif (row["Lead Segment HS"] == "Manufacturing") and (may15_retail_condition.issubset(set(row["Industry_ICP_Check_List"]))) \
-                and ("manufacturing to retail + CPG - exclude" not in row["Industry_ICP_Check_List"]):
-                return "Retail - Updated"
-            else:
-                return row["Industry (Standardized)"]
-        else:
-            return row["Industry (Standardized)"]
+    # def may15_ind(row):
+    #     if (row["Lead Segment HS"] == "Retail + CPG") or (row["Lead Segment HS"] == "Manufacturing"):
+    #         if (row["Lead Segment HS"] == "Retail + CPG") and ("retail + CPG to manufacturing" in row["Industry_ICP_Check_List"]):
+    #             return "Manufacturing - Nicole to Check"
+    #         elif (row["Lead Segment HS"] == "Manufacturing") and (may15_retail_condition.issubset(set(row["Industry_ICP_Check_List"]))) \
+    #             and ("manufacturing to retail + CPG - exclude" not in row["Industry_ICP_Check_List"]):
+    #             return "Retail - Updated"
+    #         else:
+    #             return row["Industry (Standardized)"]
+    #     else:
+    #         return row["Industry (Standardized)"]
 
-    def may15_lead_segment(row):
-        if (row["Lead Segment HS"] == "Retail + CPG") or (row["Lead Segment HS"] == "Manufacturing"):
-            if (row["Lead Segment HS"] == "Retail + CPG") and ("retail + CPG to manufacturing" in row["Industry_ICP_Check_List"]):
-                return "Manufacturing - Nicole to Check"
-            elif (row["Lead Segment HS"] == "Manufacturing") and (may15_retail_condition.issubset(set(row["Industry_ICP_Check_List"]))) \
-                and ("manufacturing to retail + CPG - exclude" not in row["Industry_ICP_Check_List"]):
-                return "Retail + CPG - Updated"
-            else:
-                return row["Lead Segment HS"]
-        else:
-            return row["Lead Segment HS"]
+    # def may15_lead_segment(row):
+    #     if (row["Lead Segment HS"] == "Retail + CPG") or (row["Lead Segment HS"] == "Manufacturing"):
+    #         if (row["Lead Segment HS"] == "Retail + CPG") and ("retail + CPG to manufacturing" in row["Industry_ICP_Check_List"]):
+    #             return "Manufacturing - Nicole to Check"
+    #         elif (row["Lead Segment HS"] == "Manufacturing") and (may15_retail_condition.issubset(set(row["Industry_ICP_Check_List"]))) \
+    #             and ("manufacturing to retail + CPG - exclude" not in row["Industry_ICP_Check_List"]):
+    #             return "Retail + CPG - Updated"
+    #         else:
+    #             return row["Lead Segment HS"]
+    #     else:
+    #         return row["Lead Segment HS"]
         
-    data["Industry (Standardized)"] = data.apply(may15_ind, axis=1)
-    data["Lead Segment HS"] = data.apply(may15_lead_segment, axis=1)
+    # data["Industry (Standardized)"] = data.apply(may15_ind, axis=1)
+    # data["Lead Segment HS"] = data.apply(may15_lead_segment, axis=1)
 
     # ------------------------------------------------------------------------------------------
 
