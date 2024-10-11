@@ -31,7 +31,7 @@ healthcare_ind_list = ['Ambulance Services', 'Blood & Organ Banks', 'Elderly Car
 def _print_info():
 
     print("The following are the Industry ICP used for the ICP check (Original Industry ICP dated back to Nov 2023)")
-    display(industry_segmentation_df.groupby('Segments')['Industry Keyword'])
+    display(industry_segmentation_df.groupby('Segments')['Industry Keyword'].apply(list).reset_index())
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------
 
