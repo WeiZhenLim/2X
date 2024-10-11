@@ -3,7 +3,7 @@ import os
 
 from logicsource_icp_check.icp_check import zi_icp_check
 
-def read_check(filepath_read, is_company, output_path, output_filename):
+def read_check(filepath_read, is_company, output_path, output_filename, revenue_range):
     """
     This function checks the ZI purchased companies/contacts based on LogicSource's ICP and export two output,
     depending on the condition: 
@@ -22,9 +22,9 @@ def read_check(filepath_read, is_company, output_path, output_filename):
 
     # check
     if is_company:
-        df_check = zi_icp_check(df, filepath_read, is_company)
+        df_check = zi_icp_check(df, filepath_read, is_company, revenue_range)
     else:
-        df_temp = zi_icp_check(df, filepath_read, is_company) # if not company, return tuple of two
+        df_temp = zi_icp_check(df, filepath_read, is_company, revenue_range) # if not company, return tuple of two
         df_check = df_temp[0] # index for contact check
         df_ipqs = df_temp[1] # index for list of email
 
@@ -53,7 +53,7 @@ def _test_company():
     output_path = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\05 LS zi ICP check"
     output_filename = "Testing-Company-Oct11"
 
-    read_check(filepath_read, is_company, output_path, output_filename)
+    read_check(filepath_read, is_company, output_path, output_filename, 1000000)
 
 def _contact_company():
     filepath_read = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\05 LS zi ICP check\ZI Contact Purchase.csv"
@@ -61,7 +61,7 @@ def _contact_company():
     output_path = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\05 LS zi ICP check"
     output_filename = "Testing-Contact-Oct11.csv"
 
-    read_check(filepath_read, is_company, output_path, output_filename)
+    read_check(filepath_read, is_company, output_path, output_filename, 1000000)
 
 # def _may15_update():
 #     filepath_read = r"C:\Users\WeiZhenLim\OneDrive - 2X LLC\Work\Python\python_project_2x\01 Test\05 LS zi ICP check\Company for May 15 Manufacturing and Retail + CPG Issues.csv"
