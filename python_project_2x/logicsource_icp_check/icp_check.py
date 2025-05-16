@@ -30,7 +30,9 @@ healthcare_ind_list = ['Ambulance Services', 'Blood & Organ Banks', 'Elderly Car
 # Create an Output for User to Download the latest version of the segmentation
 def _print_info():
 
-    print("The following are the Industry ICP used for the ICP check (Original Industry ICP dated back to Nov 2023)")
+    print("The following are the Industry ICP used for the ICP check and segmentation (Refer to the Industry ICP Keywords.csv file for more details):")
+    print("You can get the latest version of the file from the following link:")
+    print("https://github.com/WeiZhenLim/2X/blob/main/python_project_2x/logicsource_icp_check/Industry%20ICP%20Keywords.csv")
     display(industry_segmentation_df.groupby('Segments')['Industry Keyword'].apply(list).reset_index())
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------
